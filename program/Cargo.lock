@@ -2203,21 +2203,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "solana-escrow"
-version = "0.1.0"
-dependencies = [
- "arrayref",
- "solana-frozen-abi",
- "solana-program",
- "solana-program-test",
- "solana-sdk",
- "spl-token",
- "thiserror",
- "tokio",
- "zeroize",
-]
-
-[[package]]
 name = "solana-frozen-abi"
 version = "1.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2507,6 +2492,21 @@ dependencies = [
  "solana-sdk",
  "solana-vote-program",
  "thiserror",
+]
+
+[[package]]
+name = "solana-two-wallets"
+version = "0.1.0"
+dependencies = [
+ "arrayref",
+ "solana-frozen-abi",
+ "solana-program",
+ "solana-program-test",
+ "solana-sdk",
+ "spl-token",
+ "thiserror",
+ "tokio",
+ "zeroize",
 ]
 
 [[package]]
