@@ -1,6 +1,13 @@
 use console::style;
 use solana_client::rpc_client::RpcClient;
-use solana_sdk::{account::{Account, ReadableAccount}, instruction::{AccountMeta, Instruction}, pubkey::Pubkey, signature::Keypair, signer::Signer, transaction::Transaction};
+use solana_sdk::{
+    account::Account,
+    instruction::{AccountMeta, Instruction},
+    pubkey::Pubkey,
+    signature::Keypair,
+    signer::Signer,
+    transaction::Transaction,
+};
 
 mod accounts;
 mod utils;
@@ -12,8 +19,7 @@ fn encode_instruction_data(token_type: u8, amount: u64) -> [u8; 9] {
     out
 }
 
-fn create_wallet(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair)
--> Keypair {
+fn create_wallet(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair) -> Keypair {
     println!("Creating user wallet");
     let lamports = utils::read_u64("Lamports");
     let wallet = Keypair::new();
@@ -22,8 +28,7 @@ fn create_wallet(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair)
     wallet
 }
 
-fn create_pda(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair, seed: &str)
--> Pubkey {
+fn create_pda(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair, seed: &str) -> Pubkey {
     let pda = Pubkey::create_with_seed(&prog_id.pubkey(), seed, &prog_id.pubkey()).unwrap();
     match client.get_account(&pda) {
         Err(_) => {
@@ -43,8 +48,7 @@ fn create_pda(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair, seed: &
     pda
 }
 
-fn check_account(client: &RpcClient, pubkey: &Pubkey)
--> Option<Account> {
+fn check_account(client: &RpcClient, pubkey: &Pubkey) -> Option<Account> {
     let account = client.get_account(pubkey);
     if let Ok(ref account) = &account {
         utils::print_account_info(pubkey, account);
@@ -77,6 +81,7 @@ fn main() {
             (&wallet_y.pubkey(), "wallet y"),
         ],
     );
+    
 
     loop {
         print_balance();
@@ -87,7 +92,7 @@ fn main() {
             .items(&["token x", "token y"])
             .default(0)
             .interact()
-            .unwrap();
+            .expect("Failed to read token");
 
         let amount = utils::read_u64("select amount");
 
@@ -108,7 +113,8 @@ fn main() {
             Some(&payer_id.pubkey()),
         );
         transaction
-            .try_sign(&[&payer_id], client.get_recent_blockhash().expect("Failed to get blockhash").0 )
+            .try_sign(&[&payer_id], client.get_recent_blockhash()
+                .expect("Failed to get blockhash").0)
             .expect("Failed to sign");
         client
             .send_and_confirm_transaction_with_spinner(&transaction)
