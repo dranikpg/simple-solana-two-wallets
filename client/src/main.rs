@@ -48,14 +48,14 @@ fn create_pda(client: &RpcClient, prog_id: &Keypair, payer_id: &Keypair, seed: &
     pda
 }
 
-fn check_account(client: &RpcClient, pubkey: &Pubkey) -> Option<Account> {
+fn check_account(client: &RpcClient, pubkey: &Pubkey) {
     let account = client.get_account(pubkey);
     if let Ok(ref account) = &account {
         utils::print_account_info(pubkey, account);
     } else {
         println!("{} account for {}", style("Missing").red(), pubkey);
+        std::process::exit(-1);
     }
-    account.ok()
 }
 
 fn main() {
