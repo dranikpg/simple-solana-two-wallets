@@ -5,5 +5,5 @@ Simple solana program for tokenless lamport exchange between two wallets and a c
 ### Running the client
 
 The client **requires** two private keys to be present in the current directory:
-- `prog.id` - deployed program private key
-- `payer.id` - some payer account (make sure it has enough lamports to run transactions!)
+- `prog.id` - deployed program private key (make sure an account has been created)
+- `payer.id` - some payer account (make sure it has enough lamports to run transactions)
